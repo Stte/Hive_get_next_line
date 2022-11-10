@@ -3,7 +3,9 @@
 
 int main(void)
 {
-	int	fd = open("./test", O_RDONLY);
+
+	int	fd = open("test/test.txt", O_RDWR);
+	// printf("%s\n", get_next_line(fd));
 	get_next_line(fd);
 	return 0;
 }

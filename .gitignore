@@ -1,2 +1,4 @@
 *.pdf
 a.out
+.vscode
+test.txt

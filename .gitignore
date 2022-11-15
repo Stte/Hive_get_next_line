@@ -1,4 +1,4 @@
 *.pdf
-a.out
+a.out*
 .vscode
 test.txt

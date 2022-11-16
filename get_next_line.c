@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/15 15:32:17 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/16 14:18:35 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_next_line(int fd)
 	static char	*buffer = NULL;
 	char		*prev;
 	size_t		size;
-	static int	i;
+	int	i;
 
 	size = 0;
 	if (!fd)

@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:38 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/15 15:19:10 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/16 14:37:49 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ typedef struct s_list
 
 char	*get_next_line(int fd);
 
-int		gnl_strlen(char *s);
-void	*gnl_strchr(const void *s, int c, size_t n);
-t_list	*gnl_node_new(int fd, char *content);
+int		ft_strlen(char *s);
+void	*ft_strchr(const void *s, int c, size_t n);
 
 #endif

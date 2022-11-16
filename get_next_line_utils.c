@@ -6,13 +6,13 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:31 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/15 15:22:11 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/16 14:41:34 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	gnl_strlen(char *s)
+static int	ft_strlen(char *s)
 {
 	unsigned int	i;
 
@@ -22,12 +22,12 @@ int	gnl_strlen(char *s)
 	return (i);
 }
 
-void	*gnl_strchr(const void *s, int c, size_t n)
+void	*ft_strchr(const void *s, int c, size_t n)
 {
 	size_t	slen;
 	size_t	i;
 
-	slen = gnl_strlen((char *)s) + 1;
+	slen = ft_strlen((char *)s) + 1;
 	i = 0;
 	while (i < slen && i < n)
 	{
@@ -40,30 +40,32 @@ void	*gnl_strchr(const void *s, int c, size_t n)
 	return (NULL);
 }
 
-t_list	*gnl_node_new(int fd, char *content)
+static size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	t_list	*lst;
+	size_t	n;
 
-	lst = (t_list *)malloc(sizeof(t_list));
-	if (!lst)
-		return (NULL);
-	lst->fd = fd;
-	lst->content = content;
-	lst->next = NULL;
-	return (lst);
+	n = ft_strlen(src);
+	if (dstsize > 0)
+	{
+		if (n < dstsize)
+			ft_memcpy(dst, src, n + 1);
+		else
+		{
+			ft_memcpy(dst, src, dstsize - 1);
+			dst[dstsize - 1] = '\0';
+		}
+	}
+	return (n);
 }
 
-void	gnl_lstadd_back(t_list **lst, t_list *new)
+void	*ft_realloc(void *ptr, size_t size)
 {
-	t_list	*tmp;
+	char	*dst;
 
-	if (!(*lst))
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = *lst;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	dst = (char *)malloc(sizeof(char) * size);
+	if (!dst)
+		return (NULL);
+	ft_strlcpy(dst, (char *)ptr, size);
+	free(ptr);
+	ptr = dst;
 }

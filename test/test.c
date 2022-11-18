@@ -8,9 +8,9 @@ void setUp(void) {
 void tearDown(void) {
 }
 
-void test_test_txt_should_be_equal(void)
+void	test_threelines_should_be_equal(void)
 {
-	int		fd = open("test.txt", O_RDWR);
+	int		fd = open("text/threelines", O_RDWR);
 	char	*expected;
 
 	expected = "Process 34258 launched:\n";
@@ -24,12 +24,23 @@ void test_test_txt_should_be_equal(void)
 
 	expected = NULL;
 	TEST_ASSERT_EQUAL_STRING(expected, get_next_line(fd));
+	clone(fd);
+}
+
+void	test_empty_should_be_equal(void)
+{
+	int		fd = open("text/empty", O_RDWR);
+	char	*expected;
+
+	expected = NULL;
+	TEST_ASSERT_EQUAL_STRING(expected, get_next_line(fd));
+	clone(fd);
 }
 
 
 int main(void)
 {
 	UNITY_BEGIN();
-	RUN_TEST(test_test_txt_should_be_equal);
+	RUN_TEST(test_threelines_should_be_equal);
 	return UNITY_END();
 }

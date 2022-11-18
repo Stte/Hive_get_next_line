@@ -9,6 +9,8 @@ int main(void)
 	// printf("%s\n", get_next_line(fd));
 	get_next_line(fd);
 	get_next_line(fd);
+	get_next_line(fd);
+	get_next_line(fd);
 	// get_next_line(-1);
 	close(fd);
 	return (0);

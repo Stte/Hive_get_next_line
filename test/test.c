@@ -1,5 +1,6 @@
 #include "unity/unity.h"
 #include "../get_next_line.h"
+#include "main.h"
 
 void setUp(void) {
 }
@@ -7,21 +8,28 @@ void setUp(void) {
 void tearDown(void) {
 }
 
-// //#region ft_split
-// void test_tf_split_should_be_equal(void)
-// {
-// 	char	*string = "  	Is th|is a| real 	...| nah";
-// 	char	**expected = ((char*[5]){"  	Is th", "is a", " real 	...", " nah", NULL});
-// 	TEST_ASSERT_EQUAL_STRING_ARRAY(expected, ft_split(string, '|'), 5);
-// }
-// //#endregion
+void test_test_txt_should_be_equal(void)
+{
+	int		fd = open("test.txt", O_RDWR);
+	char	*expected;
+
+	expected = "Process 34258 launched:\n";
+	TEST_ASSERT_EQUAL_STRING(expected, get_next_line(fd));
+
+	expected = "\n";
+	TEST_ASSERT_EQUAL_STRING(expected, get_next_line(fd));
+
+	expected = "Process 34258 stopped\n";
+	TEST_ASSERT_EQUAL_STRING(expected, get_next_line(fd));
+
+	expected = NULL;
+	TEST_ASSERT_EQUAL_STRING(expected, get_next_line(fd));
+}
 
 
 int main(void)
 {
 	UNITY_BEGIN();
-	//#region ft_split
-	// RUN_TEST(test_tf_split_should_be_equal);
-	//#endregion
+	RUN_TEST(test_test_txt_should_be_equal);
 	return UNITY_END();
 }

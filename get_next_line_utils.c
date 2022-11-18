@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:31 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/17 18:43:09 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/18 16:10:12 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,33 +42,19 @@ void	*ft_strchr(const void *s, int c, size_t n)
 
 static size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t	n;
 	size_t	i;
 
-	n = ft_strlen((char *)src);
 	if (dstsize > 0)
 	{
-		if (n < dstsize)
+		i = 0;
+		while (i < dstsize - 1 && src[i])
 		{
-			i = 0;
-			while (i < n + 1)
-			{
-				((char *)dst)[i] = ((char *)src)[i];
-				i++;
-			}
+			((char *)dst)[i] = ((char *)src)[i];
+			i++;
 		}
-		else
-		{
-			i = 0;
-			while (i < dstsize - 1)
-			{
-				((char *)dst)[i] = ((char *)src)[i];
-				i++;
-			}
-			dst[dstsize - 1] = '\0';
-		}
+		dst[i] = '\0';
 	}
-	return (n);
+	return (ft_strlen((char *)src));
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -96,9 +82,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
-void	*ft_realloc(void *ptr, size_t size)
+void	*ft_malloc_increase(void *ptr, size_t size)
 {
 	char	*dst;
+	size_t	i;
 
 	if (!ptr || size == 0)
 	{
@@ -107,9 +94,13 @@ void	*ft_realloc(void *ptr, size_t size)
 	dst = (char *)malloc(sizeof(char) * size);
 	if (!dst)
 		return (NULL);
-	dst[size - 1] = '\0';
+	i = size;
+	while (i > 0)
+	{
+		dst[i - 1] = '\0';
+		i--;
+	}
 	ft_strlcpy(dst, (char *)ptr, size);
 	free(ptr);
-	ptr = dst;
-	return (ptr);
+	return (dst);
 }

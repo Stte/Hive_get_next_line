@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:38 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/17 16:30:16 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/18 15:23:10 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_next_line(int fd);
 
 int		ft_strlen(char *s);
 void	*ft_strchr(const void *s, int c, size_t n);
-void	*ft_realloc(void *ptr, size_t size);
+void	*ft_malloc_increase(void *ptr, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

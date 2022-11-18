@@ -3,10 +3,10 @@
 
 int main(void)
 {
-
+	char	*str;
 	int	fd = open("text/nonewline_long", O_RDWR);
-	get_next_line(fd);
-
+	str = get_next_line(fd);
+	free(str);
 	close(fd);
 	return (0);
 }

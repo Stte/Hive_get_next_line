@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/17 18:41:18 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/18 13:23:00 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static size_t	gnl_find_linebreak(char **buffer, int fd)
 	new_line = NULL;
 	while (!new_line)
 	{
-		new_line = ft_strchr(*buffer, '\n', size);
+		new_line = ft_strchr(*buffer, '\n', ft_strlen(*buffer));
 		if (new_line)
 		{
 			i = (size_t)(new_line + 1 - *buffer);
@@ -32,7 +32,11 @@ static size_t	gnl_find_linebreak(char **buffer, int fd)
 		*buffer = ft_realloc(*buffer, ft_strlen(*buffer) + BUFFER_SIZE + 1);
 		size = read(fd, *buffer + ft_strlen(*buffer), BUFFER_SIZE);
 		if (!size)
-			break ; // return the rest?
+		{
+			if (ft_strlen(*buffer) > 0)
+				return (0);
+			break ;
+		}
 	}
 	return (-1);
 }
@@ -56,8 +60,8 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	i = gnl_find_linebreak(&buffer, fd);
-	if(i == (size_t)-1)
-		; // Do something
+	if (i == (size_t)-1)
+		return (NULL);
 	line = ft_substr(buffer, 0, i);
 	tmp = ft_substr(buffer, i, ft_strlen(buffer));
 	if (!tmp || !line)
@@ -66,6 +70,5 @@ char	*get_next_line(int fd)
 	buffer = tmp;
 	return (line);
 }
-
 
 // ft_strlen(buffer) + size;

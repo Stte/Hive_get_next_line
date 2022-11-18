@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/18 15:59:40 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/18 20:00:34 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static size_t	gnl_find_linebreak(char **buffer, int fd)
 {
-	// char	*tmp;
-	// char	*line;
 	size_t	i;
 	char	*new_line;
 	size_t	size;
@@ -29,7 +27,7 @@ static size_t	gnl_find_linebreak(char **buffer, int fd)
 			i = (size_t)(new_line + 1 - *buffer);
 			return (i);
 		}
-		*buffer = ft_malloc_increase(*buffer, ft_strlen(*buffer) + BUFFER_SIZE);
+		*buffer = ft_malloc_increase(*buffer, ft_strlen(*buffer) + BUFFER_SIZE + 1);
 		size = read(fd, *buffer + ft_strlen(*buffer), BUFFER_SIZE);
 		if (!size)
 		{
@@ -44,9 +42,7 @@ static size_t	gnl_find_linebreak(char **buffer, int fd)
 char	*get_next_line(int fd)
 {
 	static char	*buffer = NULL;
-	// char		*new_line;
 	char		*tmp;
-	// size_t		size;
 	size_t		i;
 	char 		*line;
 

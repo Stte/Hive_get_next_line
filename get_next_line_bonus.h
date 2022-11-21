@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:36:13 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/21 12:36:16 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/21 18:24:20 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,11 @@
 #define BUFFER_SIZE 1024
 # endif
 
-typedef struct s_list
-{
-	int				fd;
-	char			*content;
-	struct s_list	*next;
-}					t_list;
-
 char	*get_next_line(int fd);
 
 int		ft_strlen(char *s);
 void	*ft_strchr(const void *s, int c, size_t n);
-void	*ft_malloc_increase(void *ptr, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

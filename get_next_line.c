@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/21 17:04:47 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/21 18:06:52 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,23 @@ static size_t	gnl_newline_idx(char **buffer, int fd)
 	return (0);
 }
 
+static char	*gnl_get_line(char **buffer, int end)
+{
+	char	*line;
+	char	*tmp;
+
+	line = ft_substr(*buffer, 0, end);
+	tmp = ft_substr(*buffer, end, ft_strlen(*buffer));
+	if (!tmp || !line)
+		return (NULL);
+	free(*buffer);
+	*buffer = tmp;
+	return (line);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*buffer = NULL;
-	char		*tmp;
 	size_t		i;
 	char		*line;
 
@@ -70,11 +83,6 @@ char	*get_next_line(int fd)
 		else
 			return (NULL);
 	}
-	line = ft_substr(buffer, 0, i);
-	tmp = ft_substr(buffer, i, ft_strlen(buffer));
-	if (!tmp || !line)
-		return (NULL);
-	free(buffer);
-	buffer = tmp;
+	line = gnl_get_line(&buffer, i);
 	return (line);
 }

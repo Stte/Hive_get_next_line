@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:31 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/18 16:10:12 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/21 16:52:12 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,21 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
-void	*ft_malloc_increase(void *ptr, size_t size)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*dst;
-	size_t	i;
+	char	*str;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	if (!ptr || size == 0)
-	{
+	if (!s1 || !s2)
 		return (NULL);
-	}
-	dst = (char *)malloc(sizeof(char) * size);
-	if (!dst)
+	s1_len = ft_strlen((char *)s1);
+	s2_len = ft_strlen((char *)s2);
+	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!str)
 		return (NULL);
-	i = size;
-	while (i > 0)
-	{
-		dst[i - 1] = '\0';
-		i--;
-	}
-	ft_strlcpy(dst, (char *)ptr, size);
-	free(ptr);
-	return (dst);
+	ft_strlcpy(str, s1, s1_len + 1);
+	ft_strlcpy(str + s1_len, s2, s2_len + 1);
+	str[s1_len + s2_len] = '\0';
+	return (str);
 }

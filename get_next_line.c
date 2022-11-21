@@ -6,13 +6,13 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/18 20:00:34 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/21 13:56:01 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static size_t	gnl_find_linebreak(char **buffer, int fd)
+static size_t	gnl_newline_idx(char **buffer, int fd)
 {
 	size_t	i;
 	char	*new_line;
@@ -55,7 +55,7 @@ char	*get_next_line(int fd)
 	}
 	if (!buffer)
 		return (NULL);
-	i = gnl_find_linebreak(&buffer, fd);
+	i = gnl_newline_idx(&buffer, fd);
 	if (i == (size_t)-1)
 		return (NULL);
 	if (i == 0)

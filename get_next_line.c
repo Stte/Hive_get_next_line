@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/21 18:06:52 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/21 19:49:06 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,26 @@ static size_t	gnl_newline_idx(char **buffer, int fd)
 	char	*new_line;
 	size_t	size;
 	char	sub_buff[BUFFER_SIZE + 1];
+	char	*tmp;
 
 	new_line = NULL;
 	while (!new_line)
 	{
 		new_line = ft_strchr(*buffer, '\n', ft_strlen(*buffer));
 		if (new_line)
-		{
-			i = (size_t)(new_line + 1 - *buffer);
-			return (i);
-		}
+			return ((size_t)(new_line + 1 - *buffer));
 		gnl_zerobuffer(sub_buff);
 		size = read(fd, sub_buff, BUFFER_SIZE);
-		if (!size)
+		if (!size || size < 0)
 			break ;
-		*buffer = ft_strjoin(*buffer, sub_buff);
+		tmp = ft_strjoin(*buffer, sub_buff);
+		if (!tmp)
+		{
+			*buffer = NULL;
+			return (0);
+		}
+		free(*buffer);
+		*buffer = tmp;
 	}
 	return (0);
 }
@@ -54,13 +59,24 @@ static char	*gnl_get_line(char **buffer, int end)
 	char	*line;
 	char	*tmp;
 
+	if (!buffer || !(*buffer[0]))
+		return (NULL);
 	line = ft_substr(*buffer, 0, end);
 	tmp = ft_substr(*buffer, end, ft_strlen(*buffer));
 	if (!tmp || !line)
+	{
+		free(*buffer);
+		*buffer = NULL;
 		return (NULL);
+	}
 	free(*buffer);
 	*buffer = tmp;
 	return (line);
+}
+
+static char	*gnl_check_buff(int i, char **buffer)
+{
+
 }
 
 char	*get_next_line(int fd)
@@ -69,7 +85,7 @@ char	*get_next_line(int fd)
 	size_t		i;
 	char		*line;
 
-	if (fd == -1)
+	if (fd == -1 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!buffer)
 		buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -79,9 +95,18 @@ char	*get_next_line(int fd)
 	if (i == 0)
 	{
 		if (ft_strlen(buffer) > 0)
-			return (buffer);
+		{
+			line = buffer;
+			buffer = NULL;
+			return (line);
+
+		}
 		else
+		{
+			free(buffer);
+			buffer = NULL;
 			return (NULL);
+		}
 	}
 	line = gnl_get_line(&buffer, i);
 	return (line);

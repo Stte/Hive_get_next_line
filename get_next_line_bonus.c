@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:36:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/22 17:08:46 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/22 20:58:06 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,24 @@ static void	*gnl_read(int fd, char **content)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	char	*new_line;
+	char	*tmp;
 	size_t	size;
 
 	new_line = NULL;
 	while (!new_line)
 	{
-		new_line = ft_strchr(buffer, '\n', ft_strlen(buffer));
+		new_line = ft_strchr(*content, '\n', ft_strlen(*content));
 		if (new_line)
 			return (*content);
 		gnl_zerobuffer(buffer);
 		size = read(fd, buffer, BUFFER_SIZE);
 		if (!size)
 			break ;
-		*content = ft_strjoin(*content, buffer);
+		tmp = ft_strjoin(*content, buffer);
+		if (!tmp)
+			return (NULL);
+		free(*content);
+		*content = tmp;
 	}
 	return (NULL);
 }
@@ -70,18 +75,21 @@ char	*get_next_line(int fd)
 	if (fd == -1 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!fd_list[fd])
+	{
 		fd_list[fd] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		fd_list[fd][0] = '\0';
+	}
 	if (!fd_list[fd])
 		return (NULL);
 	if (!gnl_read(fd, &fd_list[fd]))
 	{
-		if (fd_list[fd] && fd_list[fd][0])
-		{
+		line = NULL;
+		if (fd_list[fd][0])
 			line = ft_substr(fd_list[fd], 0, ft_strlen(fd_list[fd]));
-			free(fd_list[fd]);
-			fd_list[fd] = NULL;
+		free(fd_list[fd]);
+		fd_list[fd] = NULL;
+		if (line)
 			return (line);
-		}
 		return (NULL);
 	}
 	line = gnl_get_line(&fd_list[fd]);

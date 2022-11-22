@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:36:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/21 18:09:35 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/22 17:08:46 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,65 +24,66 @@ static void	gnl_zerobuffer(char *buff)
 	}
 }
 
-static size_t	gnl_newline_idx(char **buffer, int fd)
+static char	*gnl_get_line(char **content)
 {
+	char	*line;
+	char	*tmp;
 	size_t	i;
+
+	tmp = ft_strchr(*content, '\n', ft_strlen(*content));
+	i = (size_t)(tmp - *content) + 1;
+	line = ft_substr(*content, 0, i);
+	tmp = ft_substr(*content, i, ft_strlen(*content));
+	if (!tmp || !line)
+		return (NULL);
+	free(*content);
+	*content = tmp;
+	return (line);
+}
+
+static void	*gnl_read(int fd, char **content)
+{
+	char	buffer[BUFFER_SIZE + 1];
 	char	*new_line;
 	size_t	size;
-	char	sub_buff[BUFFER_SIZE + 1];
 
 	new_line = NULL;
 	while (!new_line)
 	{
-		new_line = ft_strchr(*buffer, '\n', ft_strlen(*buffer));
+		new_line = ft_strchr(buffer, '\n', ft_strlen(buffer));
 		if (new_line)
-		{
-			i = (size_t)(new_line + 1 - *buffer);
-			return (i);
-		}
-		gnl_zerobuffer(sub_buff);
-		size = read(fd, sub_buff, BUFFER_SIZE);
+			return (*content);
+		gnl_zerobuffer(buffer);
+		size = read(fd, buffer, BUFFER_SIZE);
 		if (!size)
 			break ;
-		*buffer = ft_strjoin(*buffer, sub_buff);
+		*content = ft_strjoin(*content, buffer);
 	}
-	return (0);
-}
-
-static char	*gnl_get_line(char **buffer, int end)
-{
-	char	*line;
-	char	*tmp;
-
-	line = ft_substr(*buffer, 0, end);
-	tmp = ft_substr(*buffer, end, ft_strlen(*buffer));
-	if (!tmp || !line)
-		return (NULL);
-	free(*buffer);
-	*buffer = tmp;
-	return (line);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
-	size_t		i;
+	static char	*fd_list[1024];
 	char		*line;
 
-	if (fd == -1)
+	if (fd == -1 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buffer)
-		buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
+	if (!fd_list[fd])
+		fd_list[fd] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!fd_list[fd])
 		return (NULL);
-	i = gnl_newline_idx(&buffer, fd);
-	if (i == 0)
+	if (!gnl_read(fd, &fd_list[fd]))
 	{
-		if (ft_strlen(buffer) > 0)
-			return (buffer);
-		else
-			return (NULL);
+		if (fd_list[fd] && fd_list[fd][0])
+		{
+			line = ft_substr(fd_list[fd], 0, ft_strlen(fd_list[fd]));
+			free(fd_list[fd]);
+			fd_list[fd] = NULL;
+			return (line);
+		}
+		return (NULL);
 	}
-	line = gnl_get_line(&buffer, i);
+	line = gnl_get_line(&fd_list[fd]);
 	return (line);
 }

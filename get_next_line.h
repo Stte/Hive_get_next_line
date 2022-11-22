@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:38 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/21 18:30:32 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/22 21:12:28 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # endif
 
 char	*get_next_line(int fd);
-
 int		ft_strlen(char *s);
 void	*ft_strchr(const void *s, int c, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);

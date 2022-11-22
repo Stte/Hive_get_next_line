@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/22 17:56:04 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/22 18:57:05 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ static void	gnl_zerobuffer(char *buff)
 		i++;
 	}
 }
+
+// static size_t	gnl_min(size_t a, size_t b)
+// {
+// 	if (a > b)
+// 		return (a);
+// 	return (b);
+// }
 
 static char	*gnl_get_line(char **content)
 {
@@ -51,7 +58,7 @@ static void	*gnl_read(int fd, char **content)
 	new_line = NULL;
 	while (!new_line)
 	{
-		new_line = ft_strchr(buffer, '\n', ft_strlen(buffer));
+		new_line = ft_strchr(*content, '\n', ft_strlen(*content));
 		if (new_line)
 			return (*content);
 		gnl_zerobuffer(buffer);
@@ -78,7 +85,6 @@ char	*get_next_line(int fd)
 		fd_list[fd] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!fd_list[fd])
 		return (NULL);
-	&fd_list[fd];
 	if (!gnl_read(fd, &fd_list[fd]))
 	{
 		line = NULL;

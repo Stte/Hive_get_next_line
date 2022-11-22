@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/22 19:26:54 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/22 20:31:29 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ static void	gnl_zerobuffer(char *buff)
 		i++;
 	}
 }
-
-// static size_t	gnl_min(size_t a, size_t b)
-// {
-// 	if (a > b)
-// 		return (a);
-// 	return (b);
-// }
 
 static char	*gnl_get_line(char **content)
 {
@@ -74,21 +67,6 @@ static void	*gnl_read(int fd, char **content)
 	return (NULL);
 }
 
-// char	*get_next_line(int fd)
-// {
-// 	static int	i = 0;
-// 	if(fd)
-// 		;
-// 	i++;
-// 	if (i == 1)
-// 		return (ft_strjoin("","0123456789012345678901234567890123456789\n"));
-// 	if (i == 2)
-// 		return (ft_strjoin("","0"));
-// 	if (i == 3)
-// 		return (NULL);
-// 	return (NULL);
-// }
-
 char	*get_next_line(int fd)
 {
 	static char	*fd_list[1024];
@@ -97,22 +75,22 @@ char	*get_next_line(int fd)
 	if (fd == -1 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!fd_list[fd])
+	{
 		fd_list[fd] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		fd_list[fd][0] = '\0';
+	}
 	if (!fd_list[fd])
 		return (NULL);
 	if (!gnl_read(fd, &fd_list[fd]))
 	{
 		line = NULL;
-		if (fd_list[fd])
-		{
-			if (fd_list[fd][0])
-				line = ft_substr(fd_list[fd], 0, ft_strlen(fd_list[fd]));
-			free(fd_list[fd]);
-			fd_list[fd] = NULL;
-		}
-		if (!line)
-			return (NULL);
-		return (line);
+		if (fd_list[fd][0])
+			line = ft_substr(fd_list[fd], 0, ft_strlen(fd_list[fd]));
+		free(fd_list[fd]);
+		fd_list[fd] = NULL;
+		if (line)
+			return (line);
+		return (NULL);
 	}
 	line = gnl_get_line(&fd_list[fd]);
 	return (line);

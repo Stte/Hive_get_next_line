@@ -9,14 +9,22 @@ int main(void)
 	int	fd1 = open("../gnlTester/files/multiple_nlx5", O_RDWR);
 	str = get_next_line(fd);
 	free(str);
+	str = get_next_line(fd);
+	free(str);
+	str = get_next_line(fd);
+	if (str == NULL)
+		return (0);
+	free(str);
+	str = get_next_line(fd);
+	free(str);
 	// str = get_next_line(fd);
 	// free(str);
-	// str = get_next_line(fd);
-	// free(str);
-	// str = get_next_line(fd);
-	// free(str);
-	// str = get_next_line(fd);
-	// free(str);
+	str = get_next_line(fd1);
+	free(str);
+	str = get_next_line(fd1);
+	free(str);
+	str = get_next_line(fd1);
+	free(str);
 	str = get_next_line(fd1);
 	free(str);
 	str = get_next_line(fd1);

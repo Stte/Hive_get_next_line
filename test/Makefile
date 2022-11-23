@@ -1,7 +1,7 @@
 SRCS = ../get_next_line.c ../get_next_line_utils.c
 BONUS = ../get_next_line_bonus.c ../get_next_line_utils_bonus.c
 TESTS = test.c ./unity/unity.c
-FLAGS = -g -Wall -Wextra -Werror -D BUFFER_SIZE=42
+FLAGS = -g -Wall -Wextra -Werror -D BUFFER_SIZE=42 -fsanitize=address -static-libsan
 CC = gcc
 
 all: run

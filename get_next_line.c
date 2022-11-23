@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/22 20:31:29 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/23 16:06:29 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*get_next_line(int fd)
 	static char	*fd_list[1024];
 	char		*line;
 
-	if (fd == -1 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
+	if (fd == -1 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0 || fd > 1024)
 		return (NULL);
 	if (!fd_list[fd])
 	{

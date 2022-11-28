@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:36:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/23 16:11:49 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/24 15:15:12 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*gnl_get_line(char **content)
 	char	*tmp;
 	size_t	i;
 
-	tmp = ft_strchr(*content, '\n', ft_strlen(*content));
+	tmp = ft_strchr(*content, '\n');
 	i = (size_t)(tmp - *content) + 1;
 	line = ft_substr(*content, 0, i);
 	tmp = ft_substr(*content, i, ft_strlen(*content));
@@ -51,7 +51,7 @@ static void	*gnl_read(int fd, char **content)
 	new_line = NULL;
 	while (!new_line)
 	{
-		new_line = ft_strchr(*content, '\n', ft_strlen(*content));
+		new_line = ft_strchr(*content, '\n');
 		if (new_line)
 			return (*content);
 		gnl_zerobuffer(buffer);

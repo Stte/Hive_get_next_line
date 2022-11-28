@@ -3,3 +3,4 @@ a.out*
 .vscode
 test.txt
 run_test*
+.DS_Store

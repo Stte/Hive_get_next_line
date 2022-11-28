@@ -6,7 +6,7 @@
 /*   By: tspoof <tspoof@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 00:04:35 by tspoof            #+#    #+#             */
-/*   Updated: 2022/11/24 16:59:48 by tspoof           ###   ########.fr       */
+/*   Updated: 2022/11/28 17:00:28 by tspoof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	gnl_zerobuffer(char *buff)
 	}
 }
 
-static int	gnl_read(int fd, char **content)
+static int	gnl_read(int fd, char **fd_data)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	char	*new_line;
@@ -34,50 +34,61 @@ static int	gnl_read(int fd, char **content)
 	new_line = NULL;
 	while (!new_line)
 	{
-		new_line = ft_strchr(*content, '\n');
+		new_line = ft_strchr(*fd_data, '\n');
 		if (new_line)
 			return (2);
 		gnl_zerobuffer(buffer);
 		size = read(fd, buffer, BUFFER_SIZE);
 		if (!size)
 			break ;
-		tmp = ft_strjoin(*content, buffer);
+		tmp = ft_strjoin(*fd_data, buffer);
 		if (!tmp)
 			return (0);
-		free(*content);
-		*content = tmp;
+		free(*fd_data);
+		*fd_data = tmp;
 	}
 	return (1);
 }
 
-static char	*gnl_get_line(char **content)
+static char	*gnl_get_line(char **fd_data)
 {
 	char	*line;
 	char	*tmp;
 	size_t	i;
 
-	tmp = ft_strchr(*content, '\n');
-	i = (size_t)(tmp - *content) + 1;
-	line = ft_substr(*content, 0, i);
-	tmp = ft_substr(*content, i, ft_strlen(*content));
+	tmp = ft_strchr(*fd_data, '\n');
+	i = (size_t)(tmp - *fd_data) + 1;
+	line = ft_substr(*fd_data, 0, i);
+	tmp = ft_substr(*fd_data, i, ft_strlen(*fd_data));
 	if (!tmp || !line)
 		return (NULL);
-	free(*content);
-	*content = tmp;
+	free(*fd_data);
+	*fd_data = tmp;
 	return (line);
 }
 
-static char	*gnl_line(int read_return, char **content)
+static char	*gnl_line(int read_return, char **fd_data)
 {
 	char	*line;
 
 	if (read_return == 1)
 	{
-		line = ft_substr(*content, 0, ft_strlen(*content));
-		free(*content);
-		return (line);
+		if (!fd_data || !*fd_data)
+			return (NULL);
+		if (*fd_data[0])
+		{
+			line = ft_substr(*fd_data, 0, ft_strlen(*fd_data));
+			free(*fd_data);
+			*fd_data = NULL;
+			if (!line)
+				return (NULL);
+			return (line);
+		}
+		free(*fd_data);
+		*fd_data = NULL;
+		return (NULL);
 	}
-	line = gnl_get_line(content);
+	line = gnl_get_line(fd_data);
 	return (line);
 }
 
@@ -92,7 +103,8 @@ char	*get_next_line(int fd)
 	if (!fd_list[fd])
 	{
 		fd_list[fd] = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		// PROTEK!
+		if (!fd_list[fd])
+			return (NULL);
 		fd_list[fd][0] = '\0';
 	}
 	if (!fd_list[fd])

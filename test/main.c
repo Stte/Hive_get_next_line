@@ -1,17 +1,34 @@
 #include "../get_next_line.h"
 #include "main.h"
 
-int	main(void)
-{
-	char	*gnl;
+// int	main(void)
+// {
+// 	char	*gnl;
 
-	for (int i = 3; i < 50; i++)
-	{
-		gnl = get_next_line(27);
-		printf("My line is: %s\n", gnl);
-	}
-	return 0;
+// 	for (int i = 3; i < 50; i++)
+// 	{
+// 		gnl = get_next_line(27);
+// 		printf("My line is: %s\n", gnl);
+// 	}
+// 	return 0;
+// }
+
+int main(void)
+{
+	char	*str;
+	int	fd = open("../gnlTester/files/41_with_nl", O_RDWR);
+
+	str = get_next_line(fd); // "0123456789012345678901234567890123456789\n"
+	free(str);
+	str = get_next_line(fd); // "0"
+	free(str);
+	str = get_next_line(fd); // NULL
+	free(str);
+
+	close(fd);
+	return (0);
 }
+
 
 // int main(void)
 // {
